@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card } from "reactstrap";
+import CardComp from "./Components/CardComponent/Card";
+import Axios from "axios";
+import "bootstrap/dist/css/bootstrap.css";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [details, setDetails] = useState({});
+
+	useEffect(() => {
+		fetchDetails();
+	}, []);
+	const fetchDetails = async () => {
+		// const response = await Axios.get("https://randomuser.me/api/");
+		//  destructring the response on the go
+		const { data } = await Axios.get("https://randomuser.me/api/");
+		const details = data.results[0];
+		console.log(details.picture.large);
+
+		setDetails(details);
+	};
+	return (
+    <Container fluid className="p-4 bg-primary App">
+      <Row>
+        <Col md={4} className="offset-md-4 mt-4">
+          <CardComp details={details} />
+        </Col>
+      </Row>
+  </Container>
+	);
 }
 
 export default App;
